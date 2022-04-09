@@ -1,0 +1,23 @@
+{
+  "name": "@rumpl/typebuild",
+  "private": false,
+  "version": "0.0.1-alpha.0",
+  "description": "Build docker images with typescript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepublish": "tsc",
+    "build": "tsc"
+  },
+  "keywords": [
+    "docker",
+    "build"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typedoc": "^0.22.13",
+    "typedoc-plugin-markdown": "^3.11.14",
+    "typescript": "^4.6.3"
+  }
+}
