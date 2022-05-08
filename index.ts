@@ -19,11 +19,48 @@ export interface CopyOptions {
   opts?: CopyFlags;
 }
 
-export interface RunMount {
-  target: string;
-  type?: "cache" | "bind" | "tmpfs" | "secret" | "ssh";
-  network?: "none" | "host" | "default";
+export interface Mount {
+  type: string;
 }
+
+interface CacheRunMountOptions {
+  id?: string;
+  from?: string;
+  target: string;
+  uid?: string;
+  gid?: string;
+  source?: string;
+  sharing?: "shared" | "private" | "locked";
+  readOnly?: boolean;
+  mode?: number;
+}
+
+export class CacheRunMount implements Mount {
+  type = "cache";
+  private options: CacheRunMountOptions;
+
+  constructor(options: CacheRunMountOptions) {
+    this.options = options;
+  }
+}
+
+interface BindMountOptions {
+  target: string;
+  source?: string;
+  from?: string | Stage;
+  rw?: boolean;
+}
+
+export class BindMount implements Mount {
+  type = "bind";
+  private options: BindMountOptions;
+
+  constructor(options: BindMountOptions) {
+    this.options = options;
+  }
+}
+
+export type RunMount = BindMount | CacheRunMount;
 
 export class Stage {
   private base: string;
@@ -36,7 +73,7 @@ export class Stage {
     this.commands = [];
   }
 
-  run(command: string, opts?: RunMount[]): this {
+  run(command: string, opts?: Mount[]): this {
     this.commands.push({
       type: "run",
       args: {
