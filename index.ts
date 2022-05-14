@@ -37,7 +37,7 @@ interface CacheRunMountOptions {
 
 export class CacheRunMount implements Mount {
   type = "cache";
-  private options: CacheRunMountOptions;
+  public options: CacheRunMountOptions;
 
   constructor(options: CacheRunMountOptions) {
     this.options = options;
@@ -53,7 +53,7 @@ interface BindMountOptions {
 
 export class BindMount implements Mount {
   type = "bind";
-  private options: BindMountOptions;
+  public options: BindMountOptions;
 
   constructor(options: BindMountOptions) {
     this.options = options;
@@ -123,7 +123,7 @@ export class Stage {
     return {
       base: this.base,
       name: this.name,
-      commands: this.commands,
+      commands: JSON.parse(JSON.stringify(this.commands)),
     };
   }
 }
@@ -160,4 +160,13 @@ export class Ubuntu extends Stage {
 
     return this;
   }
+}
+
+declare global {
+  interface SolveResponse {
+    readFile: (file: string) => string;
+  }
+
+  const solve: (s: Stage) => Stage;
+  const buildArg: (key: string) => string;
 }
