@@ -60,7 +60,21 @@ export class BindMount implements Mount {
   }
 }
 
-export type RunMount = BindMount | CacheRunMount;
+interface TmpfsRunMountOptions {
+  target: string;
+  size?: number;
+}
+
+export class TmpfsRunMount implements Mount {
+  type = "tmpfs";
+  public options: TmpfsRunMountOptions;
+
+  constructor(options: TmpfsRunMountOptions) {
+    this.options = options;
+  }
+}
+
+export type RunMount = BindMount | CacheRunMount | TmpfsRunMount;
 
 export class Stage {
   private base: string;
