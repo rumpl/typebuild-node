@@ -133,6 +133,11 @@ export class Stage {
     return this;
   }
 
+  user(user: string): this {
+    this.commands.push({ type: "user", args: user });
+    return this;
+  }
+
   build(): any {
     return {
       base: this.base,
@@ -181,6 +186,6 @@ declare global {
     readFile: (file: string) => string;
   }
 
-  const solve: (s: Stage) => Stage;
+  const solve: (s: Stage) => SolveResponse;
   const buildArg: (key: string) => string;
 }
