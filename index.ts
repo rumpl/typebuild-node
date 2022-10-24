@@ -85,7 +85,7 @@ export class Stage {
     this.commands = [];
   }
 
-  run(command: string, opts?: Mount[]): this {
+  run(command: string | string[], opts?: Mount[]): this {
     this.commands.push({
       type: "run",
       args: {
@@ -93,6 +93,11 @@ export class Stage {
         mounts: opts,
       },
     });
+    return this;
+  }
+
+  shell(command: string[]): this {
+    this.commands.push({ type: "shell", args: command });
     return this;
   }
 
