@@ -77,13 +77,11 @@ export class TmpfsRunMount implements Mount {
 export type RunMount = BindMount | CacheRunMount | TmpfsRunMount;
 
 export class Stage {
-  private base: string;
-  private name: string;
-  private commands: Command[];
+  protected base: Command;
+  protected commands: Command[];
 
-  constructor(name: string, base: string) {
+  protected constructor(base: Command) {
     this.base = base;
-    this.name = name;
     this.commands = [];
   }
 
@@ -140,17 +138,28 @@ export class Stage {
 
   build(): any {
     return {
-      base: this.base,
-      name: this.name,
+      base: JSON.parse(JSON.stringify(this.base)),
       commands: JSON.parse(JSON.stringify(this.commands)),
     };
+  }
+}
+
+export class Scratch extends Stage {
+  constructor() {
+    super({ type: "scratch", args: null });
+  }
+}
+
+export class Image extends Stage {
+  constructor(image: string) {
+    super({ type: "image", args: image });
   }
 }
 
 /**
  * Helper class to create a Ubuntu stage
  */
-export class Ubuntu extends Stage {
+export class Ubuntu extends Image {
   private aptUpdate = false;
 
   /**
@@ -158,8 +167,8 @@ export class Ubuntu extends Stage {
    * @param name The name of the stage
    * @param tag The tag to use for this stage
    */
-  constructor(name: string, tag = "latest") {
-    super(name, `ubuntu:${tag}`);
+  constructor(tag = "latest") {
+    super(`ubuntu:${tag}`);
   }
 
   /**
