@@ -126,6 +126,11 @@ export class Stage {
     return this;
   }
 
+  volume(dir: string): this {
+    this.commands.push({ type: "volume", args: dir });
+    return this;
+  }
+
   workdir(dir: string): this {
     this.commands.push({ type: "workdir", args: dir });
     return this;
