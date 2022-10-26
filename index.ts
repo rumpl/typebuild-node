@@ -121,6 +121,11 @@ export class Stage {
     return this;
   }
 
+  cmd(command: string[]): this {
+    this.commands.push({ type: "cmd", args: command });
+    return this;
+  }
+
   label(key: string, value: string): this {
     this.commands.push({ type: "label", args: { key, value } });
     return this;
@@ -161,8 +166,8 @@ export class Scratch extends Stage {
 }
 
 export class Image extends Stage {
-  constructor(image: string) {
-    super({ type: "image", args: image });
+  constructor(image: string, platform?: string) {
+    super({ type: "image", args: { image, platform } });
   }
 }
 
