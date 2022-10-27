@@ -45,7 +45,7 @@ export class CacheRunMount implements Mount {
 }
 
 interface BindMountOptions {
-  target: string;
+  target?: string;
   source?: string;
   from?: string | Stage;
   rw?: boolean;
@@ -211,5 +211,16 @@ declare global {
   }
 
   const solve: (s: Stage) => SolveResponse;
-  const buildArg: (key: string) => string;
+
+  type deafultBuildArgs =
+    | "BUILDPLATFORM"
+    | "BUILDOS"
+    | "BUILDARCH"
+    | "BUILDVARIANT"
+    | "TARGETPLATFORM"
+    | "TARGETOS"
+    | "TARGETARCH"
+    | "TARGETVARIANT";
+  function buildArg(key: string, defaultValue?: string): string;
+  function buildArg(key: deafultBuildArgs, defaultValue?: string): string;
 }
