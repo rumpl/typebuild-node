@@ -171,40 +171,6 @@ export class Image extends Stage {
   }
 }
 
-/**
- * Helper class to create a Ubuntu stage
- */
-export class Ubuntu extends Image {
-  private aptUpdate = false;
-
-  /**
-   *
-   * @param name The name of the stage
-   * @param tag The tag to use for this stage
-   */
-  constructor(tag = "latest") {
-    super(`ubuntu:${tag}`);
-  }
-
-  /**
-   * Install one or more packages
-   *
-   * Note: if a package should be installed this automatically runs `apt update --fix-missing` for you
-   *
-   * @param packages packages to install
-   * @returns
-   */
-  install(...packages: string[]): this {
-    if (!this.aptUpdate) {
-      this.run("apt update --fix-missing");
-      this.aptUpdate = true;
-    }
-    this.run(`apt install -y ${packages.join(" ")}`);
-
-    return this;
-  }
-}
-
 declare global {
   interface SolveResponse {
     readFile: (file: string) => string;
