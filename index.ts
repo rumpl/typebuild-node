@@ -27,8 +27,8 @@ interface CacheRunMountOptions {
   id?: string;
   from?: string;
   target: string;
-  uid?: string;
-  gid?: string;
+  uid?: number;
+  gid?: number;
   source?: string;
   sharing?: "shared" | "private" | "locked";
   readOnly?: boolean;
@@ -79,8 +79,8 @@ interface SecretRunMountOptions {
   target?: string;
   required: boolean;
   mode?: number;
-  uid?: string;
-  gid?: string;
+  uid?: number;
+  gid?: number;
 }
 
 export class SecretRunMount implements Mount {
@@ -92,11 +92,30 @@ export class SecretRunMount implements Mount {
   }
 }
 
+interface SSHRunMountOptions {
+  id?: string;
+  required: boolean;
+  target?: string;
+  mode?: number;
+  uid?: string;
+  gid?: string;
+}
+
+export class SSHRunMount implements Mount {
+  type = "ssh";
+  public options: SSHRunMountOptions;
+
+  constructor(options: SSHRunMountOptions) {
+    this.options = { ...{ required: false }, ...options };
+  }
+}
+
 export type RunMount =
   | BindMount
   | CacheRunMount
   | TmpfsRunMount
-  | SecretRunMount;
+  | SecretRunMount
+  | SSHRunMount;
 
 export class Stage {
   protected base: Command;
