@@ -74,7 +74,29 @@ export class TmpfsRunMount implements Mount {
   }
 }
 
-export type RunMount = BindMount | CacheRunMount | TmpfsRunMount;
+interface SecretRunMountOptions {
+  id?: string;
+  target?: string;
+  required: boolean;
+  mode?: number;
+  uid?: string;
+  gid?: string;
+}
+
+export class SecretRunMount implements Mount {
+  type = "secret";
+  public options: SecretRunMountOptions;
+
+  constructor(options: SecretRunMountOptions) {
+    this.options = { ...{ required: false }, ...options };
+  }
+}
+
+export type RunMount =
+  | BindMount
+  | CacheRunMount
+  | TmpfsRunMount
+  | SecretRunMount;
 
 export class Stage {
   protected base: Command;
@@ -136,6 +158,15 @@ export class Stage {
     return this;
   }
 
+  /**
+   * Sets the working directory for any `cmd`, `run`, `entrypoint` and `copy` instructions
+   * that follow it. If the workdir doesn't exist it will be created.
+   *
+   * If a relative path is provided, it will be relative to the path of the previous working directory.
+   *
+   * @param dir The new working directory
+   * @returns The stage with the new working directory as defautl
+   */
   workdir(dir: string): this {
     this.commands.push({ type: "workdir", args: dir });
     return this;
