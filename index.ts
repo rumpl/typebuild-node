@@ -94,7 +94,7 @@ export class SecretRunMount implements Mount {
 
 interface SSHRunMountOptions {
   id?: string;
-  required: boolean;
+  required?: boolean;
   target?: string;
   mode?: number;
   uid?: string;
