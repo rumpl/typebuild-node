@@ -201,7 +201,7 @@ export class Stage {
     return this;
   }
 
-  build(): any {
+  _build(): any {
     return {
       base: JSON.parse(JSON.stringify(this.base)),
       commands: JSON.parse(JSON.stringify(this.commands)),
