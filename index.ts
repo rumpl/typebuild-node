@@ -222,8 +222,23 @@ export class Image extends Stage {
 }
 
 declare global {
+  interface Stat {
+    path: string;
+    mode: number;
+    uid: number;
+    gid: number;
+    size: number;
+    modeTime: number;
+    linkname: string;
+    devmajor: number;
+    devminor: number;
+    xattrs: Record<string, string[]>;
+  }
+
   interface SolveResponse {
     readFile: (file: string) => string;
+    statFile: (file: string) => Stat;
+    readDir: (file: string) => Stat[];
   }
 
   const solve: (s: Stage) => SolveResponse;
