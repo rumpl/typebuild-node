@@ -177,6 +177,11 @@ export class Stage {
     return this;
   }
 
+  expose(port: string): this {
+    this.commands.push({ type: "expose", args: port });
+    return this;
+  }
+
   /**
    * Sets the working directory for any `cmd`, `run`, `entrypoint` and `copy` instructions
    * that follow it. If the workdir doesn't exist it will be created.
